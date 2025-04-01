@@ -8,6 +8,8 @@ public class Bootstrapper : MonoBehaviour
 
     [Space]
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip openSound;
+    [SerializeField] private AudioClip closeSound;
 
     private void Start()
     {
@@ -16,11 +18,11 @@ public class Bootstrapper : MonoBehaviour
         IFadeService fadeService = new FadeService();
         serviceLocator.TryAddService(fadeService);
 
-        ISoundPlayer soundPlayer = new SoundPlayer(audioSource);
+        ISoundPlayer soundPlayer = new SoundPlayer(audioSource, openSound, closeSound);
         serviceLocator.TryAddService(soundPlayer);
 
         MainMenuController mainMenuController = new(mainMenuView, serviceLocator);
-        SecondaryMenuController secondaryMenuController = new(secondaryMenuView);
+        SecondaryMenuController secondaryMenuController = new(secondaryMenuView, serviceLocator);
 
         List<IUIState> uIStates = new() { mainMenuController, secondaryMenuController };
 
