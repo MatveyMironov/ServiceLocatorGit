@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class UISwitcher
 {
-    private readonly Dictionary<Type, IUIState> _uIStates;
+    private readonly Dictionary<Type, IUIState> _uIStates = new();
 
     private IUIState _currentState;
 
@@ -11,7 +11,7 @@ public class UISwitcher
     {
         foreach (var uIState in uIStates)
         {
-            _uIStates.TryAdd(typeof(IUIState), uIState);
+            _uIStates.TryAdd(uIState.GetType(), uIState);
         }
     }
 

@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class SecondaryMenuView : MonoBehaviour
 {
     [SerializeField] private Button closeButton;
+    [SerializeField] private Image panelImage;
 
     private readonly List<Action> _buttonClickActions = new();
+
+    public Image PanelImage { get { return panelImage; } }
 
     private void Start()
     {
@@ -26,7 +29,7 @@ public class SecondaryMenuView : MonoBehaviour
 
     private void InvokeButtonClickActions()
     {
-        foreach (var action in _buttonClickActions)
+        foreach (var action in _buttonClickActions.ToArray())
         {
             action?.Invoke();
         }

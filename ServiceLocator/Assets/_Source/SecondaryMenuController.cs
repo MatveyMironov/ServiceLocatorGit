@@ -9,13 +9,17 @@ public class SecondaryMenuController : IUIState
         _menuView = menuView != null ? menuView : throw new ArgumentNullException(nameof(menuView));
     }
 
+    public event Action OnCloseButtonClicked;
+
     public void Enter()
     {
+        _menuView.SubscribeToButtonClick(OnCloseButtonClicked);
         _menuView.gameObject.SetActive(true);
     }
 
     public void Exit()
     {
         _menuView.gameObject.SetActive(false);
+        _menuView.UnsubscribeFromButtonClick(OnCloseButtonClicked);
     }
 }
