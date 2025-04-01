@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class SecondaryMenuController : IUIState
 {
@@ -45,5 +46,10 @@ public class SecondaryMenuController : IUIState
 
         _menuView.gameObject.SetActive(false);
         _menuView.UnsubscribeFromButtonClick(OnCloseButtonClicked);
+
+        if (_serviceLocator.TryGetService(out ISaver saver))
+        {
+            saver.SaveScore(Application.persistentDataPath);
+        }
     }
 }

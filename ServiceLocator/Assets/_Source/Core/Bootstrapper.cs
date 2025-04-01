@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bootstrapper : MonoBehaviour
 {
@@ -11,9 +13,13 @@ public class Bootstrapper : MonoBehaviour
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
 
+    [Space]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Button collectButton;
+
     private void Start()
     {
-        ServiceLocator serviceLocator = new ServiceLocator();
+        ServiceLocator serviceLocator = new();
 
         IFadeService fadeService = new FadeService();
         serviceLocator.TryAddService(fadeService);
@@ -32,5 +38,16 @@ public class Bootstrapper : MonoBehaviour
         secondaryMenuController.OnCloseButtonClicked += uISwitcher.ChangeState<MainMenuController>;
 
         uISwitcher.ChangeState<MainMenuController>();
+
+        Score score = new();
+
+        ScoreAdder scoreAdder = new(score);
+        collectButton.onClick.AddListener(scoreAdder.AddPoints);
+
+        ScoreDisplayer scoreDisplayer = new(scoreText);
+        scoreDisplayer.DisplayScore(score);
+
+        ISaver saver = new JSONSaver(score);
+        serviceLocator.TryAddService(saver);
     }
 }
