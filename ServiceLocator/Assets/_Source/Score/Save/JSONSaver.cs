@@ -1,10 +1,12 @@
 ﻿using System.IO;
 using UnityEngine;
+using Zenject;
 
 public class JSONSaver : ISaver
 {
     private readonly Score _score;
 
+    [Inject]
     public JSONSaver(Score score)
     {
         _score = score ?? throw new System.ArgumentNullException(nameof(score));
